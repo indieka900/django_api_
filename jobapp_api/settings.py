@@ -93,10 +93,10 @@ DATABASES = {
     'default': {
         'ENGINE' : 'djongo',
         "CLIENT": {
-           "name": os.getenv('DATABASE_NAME'),
-           "host": os.getenv('DATABASE_HOST'),
-           "username": os.getenv('DATABASE_USERNAME'),
-           "password": os.getenv('DATABASE_PASSWORD'),
+           "name": 'django-jobappdb',
+           "host": 'mongodb+srv://joseph:joseph900@django-jobappdb.az7p45g.mongodb.net/',
+           "username": 'joseph',
+           "password": 'joseph900',
            "authMechanism": "SCRAM-SHA-1",
         },
     }
