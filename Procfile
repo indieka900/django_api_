@@ -1,0 +1,1 @@
+web: gunicorn jobapp_api.wsgi
