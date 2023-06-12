@@ -157,7 +157,12 @@ class UserLoginView(APIView):
             
             refresh = RefreshToken.for_user(user)
             access_token = str(refresh.access_token)
-            return Response({'Token': access_token})
+            serializer = CustomUserSerializer(user)
+            response_data = {
+                'token': access_token,
+                'user': serializer.data
+            }
+            return Response(response_data, status=200)
         else:
             # Passwords do not match
             return Response({'message': 'Invalid password'}, status=400)
