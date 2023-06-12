@@ -15,7 +15,7 @@ urlpatterns = [
     path('users/<str:pk>', views.UserDetail.as_view(), name='user-detail'),
     path('bookmark/create/<str:pk>/<str:jobid>', views.BookmarkView.as_view()),
     path('bookmark/find/<str:pk>', views.FindBookmarkView.as_view()),
-    path('bookmark/delete/<str:pk>', views.delete_bookmark.as_view()),
+    path('bookmark/delete/<str:pk>', views.delete_bookmark),
     path('job/<str:pk>', views.JobCreationView.as_view(), name='job-creation'),
     path('jobs/<str:pk>/<str:user_pk>', views.JobDetail.as_view(), name='job'),
     path('login', views.UserLoginView.as_view(), name='user-login'),
