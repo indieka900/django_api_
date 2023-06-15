@@ -28,7 +28,10 @@ class UserDetail(APIView):
         except User.DoesNotExist:
             raise Http404()
         
-    
+    def get(self, request, pk):
+        user = self.get_user(pk)
+        serializer = CustomUserSerializer(user,many= False)
+        return Response(serializer.data)
     def put(self, request, pk):
         user =self.get_user(pk)
         serializer = CustomUserSerializer(user, data=request.data, partial=True)
