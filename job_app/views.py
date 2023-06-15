@@ -198,8 +198,8 @@ def searchJob(request):
             Q(title__icontains=query) | Q(location__icontains=query)
         )
         serialized_results = JobSerializer(results, many = True)
-        return Response({'results': serialized_results.data})
+        return Response(serialized_results.data)
     else:
-        return Response({'error': 'No search query provided'}) 
+        return Response({}) 
 
 # Create your views here.
