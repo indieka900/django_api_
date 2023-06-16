@@ -10,7 +10,7 @@ class CustomUserSerializer(serializers.ModelSerializer):
 class JobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Job
-        exclude = ['updated_at']
+        exclude = ['created_at']
 class BookmarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bookmark
