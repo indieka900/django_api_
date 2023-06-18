@@ -1,6 +1,5 @@
 from django.db import models
 from bson.objectid import ObjectId
-from djongo import models as djongo_models
 
 class User(models.Model):
     _id = models.CharField(primary_key=True, editable=False,max_length=255)
@@ -27,6 +26,7 @@ class Job(models.Model):
     _id = models.CharField(primary_key=True, editable=False,max_length=255)
     title = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
+    hiring = models.BooleanField(default=True)
     description = models.TextField()
     company = models.CharField(max_length=255)
     salary = models.CharField(max_length=255)
@@ -55,5 +55,8 @@ class Bookmark(models.Model):
         if not self._id:
             self._id = str(ObjectId())
         super().save(*args, **kwargs)
+        
+    def __str__(self):
+        return f"{self.job} - {self.userId}"
 
 # Create your models here.

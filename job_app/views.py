@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password, check_password
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import User, Job, Bookmark
-from .serializers import CustomUserSerializer,JobSerializer
+from .serializers import CustomUserSerializer,JobSerializer, BookmarkSerializer
 from django.db.models import Q
 
 class UserRegistrationView(APIView):
@@ -68,20 +68,6 @@ class JobCreationView(APIView):
                 return Response(serializer.data,status=201)
             return Response(serializer.errors, status=400)
         return Response({"message":"Only admins are allowed.... "})
-class FindBookmarkView(APIView):
-    # permission_classes = [IsAuthenticated]
-    def get_user(self, pk):
-        try:
-            user = User.objects.get(pk=pk)
-            return user
-        except User.DoesNotExist:
-            raise Http404()
-    def get(self, request, pk):
-        user = self.get_user(pk)
-        bookmark = Bookmark.objects.filter(userid=user.pk)
-        serializer = JobSerializer(bookmark)
-        return Response(serializer.data,status=201)
-        #return Response(serializer.errors, status=400)
     
 class BookmarkView(APIView):
     # permission_classes = [IsAuthenticated]
@@ -97,17 +83,24 @@ class BookmarkView(APIView):
             return job
         except Job.DoesNotExist:
             raise Http404()
-    def post(self, request, pk, jobid):
-        user = self.get_user(jobid)
-        job = self.get_job(pk)
-        bookmark_data = request.data.copy()
-        bookmark_data['job'] = job.pk
-        bookmark_data['userid'] = user.pk
-        serializer = JobSerializer(data=bookmark_data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=201)
-        return Response(serializer.errors, status=400)
+        
+    def get(self, request, pk):
+        bookmarks = Bookmark.objects.filter(userId=pk)
+        serializer = BookmarkSerializer(bookmarks, many=True)
+        return Response(serializer.data)
+    
+    
+    def post(self, request,pk):
+        job_id = request.data.get('job_id')
+        job = self.get_job(job_id)
+        user = self.get_user(pk)
+        existing_bookmark = Bookmark.objects.filter(userId=user.pk, job_id=job_id).first()
+        if existing_bookmark:
+            return Response({'error': 'Bookmark already exists for this user and job.'}, status=400)
+        bookmark = Bookmark(job=job,userId=user.pk)
+        bookmark.save()
+        serializer = BookmarkSerializer(bookmark)
+        return Response(serializer.data,status=201)
     
 class JobDetail(APIView):
     def get_job(self, pk):

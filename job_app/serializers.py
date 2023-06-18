@@ -12,6 +12,7 @@ class JobSerializer(serializers.ModelSerializer):
         model = Job
         exclude = ['created_at']
 class BookmarkSerializer(serializers.ModelSerializer):
+    job = JobSerializer(read_only=True)
     class Meta:
         model = Bookmark
         exclude = ['updated_at']
