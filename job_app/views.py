@@ -177,7 +177,7 @@ def get_job(request,pk):
     return Response(serializer.data)
 
 
-@api_view(['GET'])
+@api_view(['DELETE'])
 def delete_bookmark(request,pk):
     bookmark = Bookmark.objects.get(pk=pk)
     bookmark.delete()
