@@ -165,16 +165,10 @@ class UserLoginView(APIView):
 
 @api_view(['GET'])
 def Job_list(request):
-    job = Job.objects.all().order_by('?')[:5]
+    job = Job.objects.all()
     serializer = JobSerializer(job, many=True)
     return Response(serializer.data)
 
-
-@api_view(['GET'])
-def Job_lists(request):
-    job = Job.objects.all().order_by('?')
-    serializer = JobSerializer(job, many=True)
-    return Response(serializer.data)
 
 
 @api_view(['GET'])
